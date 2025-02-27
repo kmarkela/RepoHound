@@ -8,6 +8,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+const baseUrl = "https://github.com"
+
 type Result struct {
 	Username string
 	Repos    []string
@@ -53,8 +55,7 @@ func (s *Scanner) Run() []Result {
 func startWorker(wg *sync.WaitGroup, wq <-chan string, wr chan<- Result, tr *http.Transport) {
 
 	for u := range wq {
-		// endpoint := fmt.Sprintf("https://api.github.com/users/%s/repos", u)
-		endpoint := fmt.Sprintf("https://github.com/%s?tab=repositories", u)
+		endpoint := fmt.Sprintf("%s/%s?tab=repositories", baseUrl, u)
 
 		links, err := doReq(endpoint, tr)
 		if err != nil {
@@ -93,7 +94,7 @@ func doReq(endpoint string, tr *http.Transport) ([]string, error) {
 	doc.Find(`a[itemprop="name codeRepository"]`).Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
 		if exists {
-			links = append(links, href)
+			links = append(links, baseUrl+href)
 		}
 	})
 
