@@ -1,6 +1,7 @@
 package scanner
 
 import (
+	mutatetion "RepoHound/internal/mutate"
 	"bufio"
 	"fmt"
 	"net/http"
@@ -14,7 +15,7 @@ type Scanner struct {
 	tr      *http.Transport
 }
 
-func New(workers int, f, proxy string) (Scanner, error) {
+func New(workers int, f, proxy, keyword string) (Scanner, error) {
 
 	var scanner = Scanner{}
 	var tr = http.Transport{}
@@ -44,6 +45,10 @@ func New(workers int, f, proxy string) (Scanner, error) {
 
 	if err := s.Err(); err != nil {
 		return scanner, fmt.Errorf("error reading file: %w", err)
+	}
+
+	if keyword != "" {
+		uList = mutatetion.Mutate(uList, keyword)
 	}
 
 	return Scanner{

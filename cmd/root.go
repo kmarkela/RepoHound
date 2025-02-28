@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "v0.1"
+const version = "v0.2"
 
 var rootCmd = &cobra.Command{
 	Use:   "RepoHound",
@@ -35,8 +35,12 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalln(err)
 		}
+		keyword, err := cmd.Flags().GetString("keyword")
+		if err != nil {
+			log.Fatalln(err)
+		}
 
-		s, err := scanner.New(workers, fu, proxy)
+		s, err := scanner.New(workers, fu, proxy, keyword)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -51,6 +55,7 @@ func init() {
 	rootCmd.PersistentFlags().StringP("userlist", "u", "", "userlist")
 	rootCmd.MarkFlagRequired("userlist")
 	rootCmd.PersistentFlags().StringP("proxy", "p", "", "HTTP Proxy")
+	rootCmd.PersistentFlags().StringP("keyword", "k", "", "KW to mutate usernames")
 	rootCmd.PersistentFlags().BoolP("json", "", false, "Output in JSON Format")
 	rootCmd.PersistentFlags().IntP("workers", "", 5, "Workers")
 	// rootCmd.Root().CompletionOptions.DisableDefaultCmd = true

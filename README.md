@@ -55,6 +55,7 @@ Usage:
 Flags:
   -h, --help              help for RepoHound
       --json              Output in JSON Format
+  -k, --keyword string    KW to mutate usernames
   -p, --proxy string      HTTP Proxy
   -u, --userlist string   userlist
       --workers int       Workers (default 5)
@@ -70,6 +71,10 @@ https://github.com/kmarkela/wiggumizer
 https://github.com/kmarkela/SimplePortScanner
 
 ```
+
+### Mutate
+
+`-k <Keyword>` will try to find repo for `<usernamr>`, `<username>-<Keyword>` and `<Keyword>-<username>`  
 
 ## License 
 
